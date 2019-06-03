@@ -1,109 +1,31 @@
-ARCHIVOS DE CONFIGURACION DE LAS MAQUINAS DEL EXAMEN DE ASO:
-
-MAQUINA NETBSD
-
-ver las particiones:
-hay que hacerse root y con el comando fdisk nos salen las particiones.
-Tiene swap de 224MB
-
-preguntas de otros años:
-
-2018
-
-1.¿Que esquema de particionamiento tiene el disco de dicha maquina virtual?¿Cuantos cargadores hay instalados
-y donde estan instalados?
-
-sudo cfdisk
-Nos permite ver que tipode particionamiento tiene la maquina
-En el caso de la maquina de exmamen es MBR
-
+PARTICIONES
+L#cfdisk
 primer bloque de dev/sda grub generico
 sda1 arranque de netbsd
 sda2 grub de linux
 sda3 swap
 
-2.¿Utilizan los SO swap?¿Que tamaño tienen las particiones de swap y en que bloque comienzan (en ambos SO)?
-NETBSD
+SWAP
+L#swapon -s
+B#swapctl -l (/etc/fstab)
 
-ARX
-sudo swapon -s  #o sin el -s tambien saca a info
-/swapsapace  #esta sobre este archivo
-tamaño 572.2MB
+INT RED
+L#/etc/network/interfaces #ip addr show
+N#/etc/rc.conf
 
-NETBSD
-se mira con fdisk o con cfdisk
-sda3 es el swap
-empieza en 33095680 y ocuoa 224MB
+PAQUETES
+L#apt-list --installed
+N#pkg_info
 
-3.BSD. Configurar las interfaces de red en la maqiuna bsd exactamente igual a como estan en la distribucion linux,
-de manera que la configuracion se mantenga al reiniciar.
-en linux la configuracion de interfaces esta en /etc/network/interfaces
-en netbsd la configuracion de interfaces se hace en el archivo /etc/rc.conf
-(REVISAR)
+LOGS
+L#/etc/logrotate.conf
+N#/etc/newsyslog.conf
 
-4.BSD. ¿Que paquetes estan instalados?¿Esta instalado el sitema de ports?,en caso afirmativo,¿puede saberse cuales
-de los paquetes han sido instalados desde el sistema de ports?
+MIRROR
+/etc/apt/sources.list.d
 
-pkg_info nos da todos los paquetes intalados en bsd
-(REVISAR)
+PATH513
+/home/user513/.profile
 
-5.BSD. ¿Con que criterio (y cuantos archivos se guardan...) se esta rotando el archivo de log del cron?
-/etc/newsyslog.conf
-Se guardan 3 archivos y se rota cuando se alcanza el tamaño maximo de archivo, en este caso es 100 el tamaño maximo
-
-6.BSD. ¿Pertenece algun usuario a una login-class distinta de la default?.user501 tiene un problema para acceder
-a su cuenta.¿cual es?Arreglalo
-
-
-
-7.LINUX. sin instalar ningun software adicional habilitar el servicio ftp
-/etc/services podemos ver que servicios estan habilitados
-(REVISAR)
-
-8.LINUX. ¿Que mirror esta usando el sistema de paquetes?Modificar la configuracion para que use un mirror en Polonia
-cd /etc/apt/sources.list.d
-hay estan los archivos de la configuracion de paqueteria del SO
-
-9.LINUX. ¿Con que criterio (y cuantos archivos se guardan ...) se esta rotando /var/log/messages (producido por el
-syslog)?. Modificar la configuracion del sistema para que se rote cada hora y se conserven los de los ultimos dos
-dias si que adfecte a como se rotan los demas ficheros
-nano /etc/logrotate.conf
-
-se rota semanalmente y se guardan los archivos de las 4 semanas
-
-se cambiaria a hourly y supongo que se pondra el rotate 48 pero no lo se...
-
-10.LINUX. varios usuarios tienen establecida fecha de caducidad de su cuenta. ¿Que usuarios son y cual es esta 
-fecha? Prolongasela un mes.
-
-2016
-
-1.¿Tiene la maquina particion de swap?¿Cuanto ocupa?
-
-2.¿Como se llaman las intefaces de red en esta maquina?Configurar lass segunda interfaz de red en la red 192.168.2.0
-y la tercera enla red 192.168.10.0 de manera que la configuracion se mantenga all reiniciar.
-
-3.¿Tiene habilitado el servicio ftp?(¿como se ha comprobado?)Si lo esta deshabilitadlo y si no lo esta, habilitadlo
-
-4.user5 no logra entrar mediante ssh o en modo texto y con el login gafico no le funcionan los terminales.Arreglarlo
-
-5.La maquina esta configurada para hacer copias de seguridad en iniciarse. Modificar la configuracion para que las 
-haga todos los dias a las 15:30
-
-6.Que usuario (o usuarios) ha estado intentando hacerse root el dia de ayer y a que hora? 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+TTY
+/etc/securetty
