@@ -1,0 +1,105 @@
+ARCHIVOS DE CONFIGURACION DE LAS MAQUINAS DEL EXAMEN DE ASO:
+
+NetBSD:user519 psswd:user519 (te haces su con la passwd root1234)
+AntiX:user000 passwd:user000 (te haces su con sudo su y la passwd del user (user000))
+
+2018
+
+1.¿Que esquema de particionamiento tiene el disco de dicha maquina virtual?¿Cuantos cargadores hay instalados
+y donde estan instalados?
+
+sudo cfdisk
+Nos permite ver que tipode particionamiento tiene la maquina
+En el caso de la maquina de exmamen es MBR
+
+primer bloque de dev/sda grub generico
+sda1 arranque de netbsd
+sda2 grub de linux
+sda3 swap
+
+2.¿Utilizan los SO swap?¿Que tamaño tienen las particiones de swap y en que bloque comienzan (en ambos SO)?
+NETBSD
+
+ARX
+sudo swapon -s  #o sin el -s tambien saca a info
+/swapsapace  #esta sobre este archivo
+tamaño 572.2MB
+
+NETBSD
+se mira con fdisk o con cfdisk
+sda3 es el swap
+empieza en 33095680 y ocupa 224MB
+
+3.BSD. Configurar las interfaces de red en la maqiuna bsd exactamente igual a como estan en la distribucion linux,
+de manera que la configuracion se mantenga al reiniciar.
+
+en linux la configuracion de interfaces esta en /etc/network/interfaces
+en netbsd la configuracion de interfaces se hace en el archivo /etc/rc.conf
+(REVISAR)
+
+4.BSD. ¿Que paquetes estan instalados?¿Esta instalado el sitema de ports?,en caso afirmativo,¿puede saberse cuales
+de los paquetes han sido instalados desde el sistema de ports?
+
+Ports(alternativa para instalar paquetes preconstruidos):Debería estar en /usr/ports pero puxo en cd:ports.tar.gz
+
+pkg_info nos da todos los paquetes intalados en bsd
+(REVISAR)
+
+5.BSD. ¿Con que criterio (y cuantos archivos se guardan...) se esta rotando el archivo de log del cron?
+
+/etc/newsyslog.conf
+Se guardan 3 archivos y se rota cuando se alcanza el tamaño maximo de archivo, en este caso es 100 el tamaño maximo
+
+6.BSD. ¿Pertenece algun usuario a una login-class distinta de la default?.user501 tiene un problema para acceder
+a su cuenta.¿cual es?Arreglalo
+
+el usuario 513 tiene algo raro, tiene 3 comas, que significan el geco, que contiene la info de usuario real
+name office wphone y hphone
+No funciona bien porque en el archivo vi /home/user513/.profile ; quitamos las "" de path= export
+
+7.LINUX. sin instalar ningun software adicional habilitar el servicio 
+/etc/services podemos ver que servicios estan habilitados
+(REVISAR)
+
+8.LINUX. ¿Que mirror esta usando el sistema de paquetes?Modificar la configuracion para que use un mirror en Polonia
+cd /etc/apt/sources.list.d
+hay estan los archivos de la configuracion de paqueteria del SO
+
+9.LINUX. ¿Con que criterio (y cuantos archivos se guardan ...) se esta rotando /var/log/messages (producido por el
+syslog)?. Modificar la configuracion del sistema para que se rote cada hora y se conserven los de los ultimos dos
+dias si que adfecte a como se rotan los demas ficheros
+nano /etc/logrotate.conf
+
+se rota semanalmente y se guardan los archivos de las 4 semanas
+
+se cambiaria a hourly y supongo que se pondra el rotate 48 pero no lo se...
+
+10.LINUX. varios usuarios tienen establecida fecha de caducidad de su cuenta. ¿Que usuarios son y cual es esta 
+fecha? Prolongasela un mes.
+user513 solo puede acceder a la shell para cambios hora y de fecha
+
+se comprueba en el fichero /etc/shadow   tiene que poner expire
+se cambia la fecha con el comando chage -e "fecha de expiracion nueva"
+
+passwd -x "numero de dias" "usuario"
+
+2016
+2.¿Como se llaman las intefaces de red en esta maquina?Configurar las segunda interfaz de red en la red 192.168.2.0
+y la tercera enla red 192.168.10.0 de manera que la configuracion se mantenga all reiniciar.
+
+3.¿Tiene habilitado el servicio ftp?(¿como se ha comprobado?)Si lo esta deshabilitadlo y si no lo esta, habilitadlo
+
+4.user5 no logra entrar mediante ssh o en modo texto y con el login grafico no le funcionan los terminales.Arreglarlo
+
+5.La maquina esta configurada para hacer copias de seguridad en iniciarse. Modificar la configuracion para que las 
+haga todos los dias a las 15:30
+
+6.Que usuario (o usuarios) ha estado intentando hacerse root el dia de ayer y a que hora? 
+
+PARA OPENBSD:
+
+cat /var/log/authlog | grep root
+
+PARA LINUX:
+
+cat /var/log/lastlog | grep root
